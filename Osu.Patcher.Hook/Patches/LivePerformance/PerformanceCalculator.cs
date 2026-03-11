@@ -13,9 +13,17 @@ namespace Osu.Patcher.Hook.Patches.LivePerformance;
 /// </summary>
 internal static class PerformanceCalculator
 {
+    private const int ModRelax = 1 << 7;
+    private const int ModAutopilot = 1 << 13;
+
     private static readonly Obfuscated ObfuscatedModsStub = new(Stubs.Root.Mods.Type.Reference);
 
     public static OsuPerformance? Calculator { get; private set; }
+
+    /// <summary>
+    ///     The original mods (including RX/AP) for the current score, used by the Sunrise recalculation.
+    /// </summary>
+    public static uint OriginalMods { get; private set; }
 
     public static bool IsInitialized => Calculator != null;
 
@@ -49,8 +57,12 @@ internal static class PerformanceCalculator
         var modsObfuscated = Score.EnabledMods.Get(currentScore);
         var mods = ObfuscatedModsStub.GetValue.Invoke<int>(modsObfuscated);
 
-        // Clear relax mod for now (live pp calculations for relax are fucking garbage)
-        mods &= ~(1 << 7);
+        OriginalMods = (uint)mods;
+
+        // Strip RX and AP mods -- rosu-pp doesn't support them natively.
+        // Sunrise recalculation is applied on top using OriginalMods.
+        mods &= ~ModRelax;
+        mods &= ~ModAutopilot;
 
         var beatmap = Score.Beatmap.Get(currentScore);
         if (beatmap == null) return;

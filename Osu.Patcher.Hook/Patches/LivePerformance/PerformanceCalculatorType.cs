@@ -14,12 +14,12 @@ public enum PerformanceCalculatorType
     Bancho,
 
     /// <summary>
-    ///     Use Akatsuki pp calculations.
+    ///     Use Sunrise pp calculations.
     /// </summary>
-    Akatsuki,
+    Sunrise,
 
     /// <summary>
-    ///     Use Akatsuki pp calculations when either Relax or Autopilot is enabled, and Bancho otherwise.
+    ///     Use Sunrise pp calculations when either Relax or Autopilot is enabled, and Bancho otherwise.
     /// </summary>
-    AkatsukiLimited,
+    SunriseLimited,
 }

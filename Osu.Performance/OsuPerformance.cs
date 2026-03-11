@@ -42,7 +42,7 @@ public class OsuPerformance : IDisposable
     }
 
     [UsedImplicitly]
-    public event Action<double>? OnNewCalculation;
+    public event Action<OsuGradualResult>? OnNewCalculation;
 
     /// <summary>
     ///     Queues a judgement to be processed later.
@@ -77,15 +77,15 @@ public class OsuPerformance : IDisposable
 
             while (_queue.TryDequeue(out var item))
             {
-                var performance = Native.CalculateGradualOsuPerformance(_state, item.Judgement, item.MaxCombo);
+                var result = Native.CalculateGradualOsuPerformance(_state, item.Judgement, item.MaxCombo);
 
-                if (performance < 0f)
+                if (result.Pp < 0f)
                 {
                     Debug.Fail("Cannot calculate performance after the end of a beatmap!");
                     break;
                 }
 
-                OnNewCalculation?.Invoke(performance);
+                OnNewCalculation?.Invoke(result);
 
                 if (_queueTaskCancellation.IsCancellationRequested) return;
             }
@@ -112,6 +112,6 @@ public class OsuPerformance : IDisposable
     private struct PendingCalculation
     {
         public OsuJudgement Judgement;
-        public ulong MaxCombo;
+        public uint MaxCombo;
     }
 }

@@ -55,10 +55,10 @@ internal class PerformanceOptions : PatchOptions
         var dropdownOptions = new[]
         {
             pDropdownItem.Constructor.Invoke(["Bancho", PerformanceCalculatorType.Bancho]),
-            pDropdownItem.Constructor.Invoke(["Akatsuki", PerformanceCalculatorType.Akatsuki]),
+            pDropdownItem.Constructor.Invoke(["Sunrise-based", PerformanceCalculatorType.Sunrise]),
             pDropdownItem.Constructor.Invoke([
-                "Akatsuki if RX/AP else Bancho",
-                PerformanceCalculatorType.AkatsukiLimited,
+                "Sunrise-based if RX/AP else Bancho",
+                PerformanceCalculatorType.SunriseLimited,
             ]),
         }.ToType(pDropdownItem.Class.Reference);
 

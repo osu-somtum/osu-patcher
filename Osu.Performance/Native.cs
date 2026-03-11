@@ -22,10 +22,10 @@ public static class Native
     );
 
     [DllImport("rosu.ffi.dll", EntryPoint = "calculate_osu_performance_gradual")]
-    internal static extern double CalculateGradualOsuPerformance(
+    internal static extern OsuGradualResult CalculateGradualOsuPerformance(
         IntPtr state, // This is not thread safe!
         OsuJudgement judgement,
-        ulong maxCombo
+        uint maxCombo
     );
 
     // This is not thread safe!
