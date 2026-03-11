@@ -7,5 +7,4 @@ edition = "2021"
 crate-type = ["dylib"]
 
 [dependencies.rosu-pp]
-version = "0.10.0"
-features = ["gradual"]
+version = "3.1.0"
