@@ -16,7 +16,8 @@ namespace Osu.Patcher.Hook;
 [UsedImplicitly]
 public static class Hook
 {
-    private const string GithubUrl = "https://github.com/rushiiMachine/osu-patcher";
+    private const string GithubUrl = "https://github.com/SunriseCommunity/osu-patcher";
+    private const string IssuesUrl = GithubUrl + "/issues";
     private static Harmony _harmony = null!;
 
     /// <summary>
@@ -129,7 +130,7 @@ public static class Hook
                 "osu!patcher experienced an error! Click to report.",
                 NotificationColor.Error,
                 20000,
-                () => { Process.Start($"{GithubUrl}/issues"); });
+                () => { Process.Start(IssuesUrl); });
         }
         catch (Exception e2)
         {
