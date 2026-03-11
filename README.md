@@ -18,7 +18,7 @@ Using this on official Bancho servers WILL get you banned.
 - Show misses on hit objects while playing Relax
 - Re-enable combobreak sounds with Relax enabled
 - Save all Relax scores to local leaderboards automatically
-- Allow failing with Relax enabled
+- Allow failing with Relax enabled (toggleable)
 - Re-enable the low hp glow (with shaders on)
 
 <sup>Note: Relax refers to Relax *or* Autopilot</sup>
@@ -26,7 +26,6 @@ Using this on official Bancho servers WILL get you banned.
 ### PP
 - Show a live pp counter during gameplay and replays
 - Switch between Bancho and Sunrise pp calculators
-- ~~Show PP on local leaderboards~~ (soon)
 
 ### Mods
 - Always faintly show active mods during gameplay

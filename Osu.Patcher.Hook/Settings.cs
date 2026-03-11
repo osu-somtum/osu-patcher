@@ -73,7 +73,7 @@ public class Settings
 
     public bool EnableModAudioPreview { get; set; } = true;
     public bool ShowPerformanceInGame { get; set; } = true;
-    public bool ShowPerformanceOnLeaderboard { get; set; } = true;
+    public bool AllowRelaxFailing { get; set; } = true;
     public PerformanceCalculatorType PerformanceCalculator { get; set; } = PerformanceCalculatorType.SunriseLimited;
     
     #endregion
