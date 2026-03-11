@@ -7,11 +7,10 @@ namespace Osu.Performance;
 public struct OsuDifficultyAttributes
 {
     public double Stars;
-    public ulong MaxCombo;
+    public uint MaxCombo;
     public double SpeedNoteCount;
 
     public double ApproachRate;
-    public double OverallDifficulty;
     public double HealthRate;
 
     public double AimSkill;
@@ -19,19 +18,22 @@ public struct OsuDifficultyAttributes
     public double FlashlightSkill;
     public double SliderSkill;
 
-    public ulong CircleCount;
-    public ulong SliderCount;
-    public ulong SpinnerCount;
+    public double AimDifficultStrainCount;
+    public double SpeedDifficultStrainCount;
+
+    public uint CircleCount;
+    public uint SliderCount;
+    public uint SpinnerCount;
 }
 
 [StructLayout(LayoutKind.Sequential)]
 public struct OsuScoreState
 {
-    public ulong ScoreMaxCombo;
-    public ulong Score300s;
-    public ulong Score100s;
-    public ulong Score50s;
-    public ulong ScoreMisses;
+    public uint ScoreMaxCombo;
+    public uint Score300s;
+    public uint Score100s;
+    public uint Score50s;
+    public uint ScoreMisses;
 }
 
 [StructLayout(LayoutKind.Sequential)]
@@ -43,6 +45,31 @@ public struct OsuPerformanceInfo
     public double AccuracyPP;
     public double FlashlightPP;
     public double EffectiveMissCount;
+}
+
+[StructLayout(LayoutKind.Sequential)]
+public struct OsuGradualResult
+{
+    public double Pp;
+    public double PpAim;
+    public double PpSpeed;
+    public double PpAccuracy;
+    public double PpFlashlight;
+    public double EffectiveMissCount;
+    public double AimDifficultStrainCount;
+    public double SpeedDifficultStrainCount;
+    public double DiffAim;
+    public uint Misses;
+    public uint N300;
+    public uint N100;
+    public uint N50;
+
+    public double CalculateAccuracy()
+    {
+        var totalHits = N300 + N100 + N50 + Misses;
+        if (totalHits == 0) return 100.0;
+        return (double)(N300 * 300 + N100 * 100 + N50 * 50) / (totalHits * 300) * 100.0;
+    }
 }
 
 [SuppressMessage("ReSharper", "UnusedMember.Global")]

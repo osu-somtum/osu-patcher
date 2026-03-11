@@ -1,10 +1,9 @@
 use std::ffi::{c_char, CStr};
-use std::fs::File;
 
-use rosu_pp::{Beatmap, OsuPP};
-use rosu_pp::osu::{OsuDifficultyAttributes, OsuOwnedGradualPerformance, OsuPerformanceAttributes, OsuScoreState};
+use rosu_pp::{Beatmap, Difficulty};
+use rosu_pp::osu::{OsuDifficultyAttributes, OsuGradualPerformance, OsuPerformanceAttributes, OsuScoreState};
 
-use crate::structs::{FFIOsuDifficultyAttributes, FFIOsuPerformanceAttributes, FFIOsuScoreState, OsuJudgement};
+use crate::structs::{FFIGradualResult, FFIOsuDifficultyAttributes, FFIOsuPerformanceAttributes, FFIOsuScoreState, OsuJudgement};
 
 mod structs;
 
@@ -17,12 +16,13 @@ extern "C" fn calculate_osu_performance(
     let difficulty: OsuDifficultyAttributes = difficulty.into();
     let state: OsuScoreState = state.into();
 
-    let performance = OsuPP::new(&Beatmap::default())
+    let performance: OsuPerformanceAttributes = difficulty
+        .performance()
         .mods(mods)
         .passed_objects(state.total_hits())
-        .attributes(difficulty)
         .state(state)
-        .calculate();
+        .calculate()
+        .unwrap();
 
     (&performance).into()
 }
@@ -35,11 +35,12 @@ extern "C" fn initialize_osu_performance_gradual(
     let map_path_bytes = unsafe { CStr::from_ptr(map_path) }.to_bytes();
     let map_path: &str = unsafe { std::str::from_utf8_unchecked(map_path_bytes) };
 
-    let map = Beatmap::parse(File::open(map_path).unwrap()).unwrap(); // TODO: handle errors
-    let performance = OsuOwnedGradualPerformance::new(map, mods);
+    let map = Beatmap::from_path(map_path).unwrap(); // TODO: handle errors
+    let difficulty = Difficulty::new().mods(mods);
+    let performance = OsuGradualPerformance::new(difficulty, &map).unwrap();
     let state = OsuGradualPerformanceState {
         performance,
-        score: OsuScoreState::default(),
+        score: OsuScoreState::new(),
     };
 
     Box::into_raw(Box::new(state))
@@ -49,16 +50,16 @@ extern "C" fn initialize_osu_performance_gradual(
 extern "C" fn calculate_osu_performance_gradual(
     state: &mut OsuGradualPerformanceState,
     new_judgement: OsuJudgement,
-    max_combo: u64,
-) -> f64 {
-    state.score.max_combo = max_combo as usize;
+    max_combo: u32,
+) -> FFIGradualResult {
+    state.score.max_combo = max_combo;
 
     match new_judgement {
         OsuJudgement::None => {}
         OsuJudgement::Result300 => state.score.n300 += 1,
         OsuJudgement::Result100 => state.score.n100 += 1,
         OsuJudgement::Result50 => state.score.n50 += 1,
-        OsuJudgement::ResultMiss => state.score.n_misses += 1,
+        OsuJudgement::ResultMiss => state.score.misses += 1,
     }
 
     let performance: Option<OsuPerformanceAttributes> = if matches!(new_judgement, OsuJudgement::None) {
@@ -68,9 +69,10 @@ extern "C" fn calculate_osu_performance_gradual(
         state.performance.next(state.score.clone())
     };
 
-    return performance
-        .map(|attrs| attrs.pp)
-        .unwrap_or(-1.0);
+    match performance {
+        Some(attrs) => FFIGradualResult::from_attrs(&attrs, &state.score),
+        None => FFIGradualResult::failed(),
+    }
 }
 
 #[no_mangle]
@@ -81,6 +83,6 @@ extern "C" fn dispose_osu_performance_gradual(
 }
 
 struct OsuGradualPerformanceState {
-    performance: OsuOwnedGradualPerformance,
+    performance: OsuGradualPerformance,
     score: OsuScoreState,
 }

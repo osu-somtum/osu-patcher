@@ -25,7 +25,7 @@ Using this on official Bancho servers WILL get you banned.
 
 ### PP
 - Show a live pp counter during gameplay and replays
-- Switch between Bancho and ~~Akatsuki~~ (soon) pp calculators
+- Switch between Bancho and Sunrise pp calculators
 - ~~Show PP on local leaderboards~~ (soon)
 
 ### Mods
