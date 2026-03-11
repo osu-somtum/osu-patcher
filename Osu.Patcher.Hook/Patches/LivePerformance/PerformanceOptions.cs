@@ -16,21 +16,18 @@ internal class PerformanceOptions : PatchOptions
     public override IEnumerable<object> CreateOptions() =>
     [
         CreateInGameDisplayOption(),
-        CreateLeaderboardDisplayOption(),
         CreatePerformanceTypeOption(),
     ];
 
     public override void Load(Settings config)
     {
         ShowPerformanceInGame.Value = config.ShowPerformanceInGame;
-        ShowPerformanceOnLeaderboard.Value = config.ShowPerformanceOnLeaderboard;
         PerformanceType.Value = config.PerformanceCalculator;
     }
 
     public override void Save(Settings config)
     {
         config.ShowPerformanceInGame = ShowPerformanceInGame.Value;
-        config.ShowPerformanceOnLeaderboard = ShowPerformanceOnLeaderboard.Value;
         config.PerformanceCalculator = PerformanceType.Value;
     }
 
@@ -40,13 +37,6 @@ internal class PerformanceOptions : PatchOptions
         /* title: */ "Show PP during gameplay",
         /* tooltip: */ "A small PP counter display will be visible below the accuracy display.",
         /* binding: */ ShowPerformanceInGame.Bindable,
-        /* onChange: */ null,
-    ]);
-
-    private static object CreateLeaderboardDisplayOption() => OptionCheckbox.Constructor.Invoke([
-        /* title: */ "Show PP on local leaderboards",
-        /* tooltip: */ "A small PP counter display will be visible on each local score.",
-        /* binding: */ ShowPerformanceOnLeaderboard.Bindable,
         /* onChange: */ null,
     ]);
 
@@ -76,9 +66,6 @@ internal class PerformanceOptions : PatchOptions
 
     public static readonly BindableWrapper<bool> ShowPerformanceInGame =
         new(BindableType.Bool, false, Settings.Default.ShowPerformanceInGame);
-
-    public static readonly BindableWrapper<bool> ShowPerformanceOnLeaderboard =
-        new(BindableType.Bool, false, Settings.Default.ShowPerformanceOnLeaderboard);
 
     public static readonly BindableWrapper<PerformanceCalculatorType> PerformanceType = new(
         BindableType.Object,

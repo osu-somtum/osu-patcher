@@ -1,10 +1,13 @@
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using JetBrains.Annotations;
 using Osu.Stubs.GameModes.Options;
+using Osu.Stubs.Wrappers;
 using Osu.Utils.Extensions;
 using static Osu.Patcher.Hook.Patches.CustomStrings.CustomStrings;
 
@@ -39,6 +42,9 @@ internal static class AddOptionsToUi
             CreatePatcherSectionOption(),
             CreatePatchOptionSpacer(2),
             CreatePatcherVersionOption(),
+            CreateCreditsOption("Originally by rushiiMachine", "https://github.com/rushiiMachine"),
+            CreateCreditsOption("Fork maintained by richardscull", "https://github.com/SunriseCommunity/osu-patcher"),
+            CreateCreditsOption("Report issues on GitHub", "https://github.com/SunriseCommunity/osu-patcher/issues"),
         }.ToType(OptionElement.Class.Reference);
 
         var category = OptionCategory.Constructor.Invoke([osuPatcherString, fontAwesomeSyringe]);
@@ -77,6 +83,11 @@ internal static class AddOptionsToUi
 
         return options;
     }
+
+    private static object CreateCreditsOption(string text, string url) => OptionText.Constructor.Invoke([
+        /* title: */ text,
+        /* onClick: */ VoidDelegate.MakeInstance(() => Process.Start(url)),
+    ]);
 
     private static object CreatePatchOptionSpacer(int lines = 1) => OptionText.Constructor.Invoke([
         /* title: */ new string('\n', lines),

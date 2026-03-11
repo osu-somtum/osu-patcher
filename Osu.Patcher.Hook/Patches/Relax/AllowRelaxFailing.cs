@@ -4,8 +4,10 @@ using System.Reflection;
 using System.Reflection.Emit;
 using HarmonyLib;
 using JetBrains.Annotations;
+using Osu.Stubs.GameplayElements.Scoring;
 using Osu.Utils.Extensions;
 using Osu.Utils.IL;
+using OsuMods = Osu.Stubs.Root.Mods;
 
 namespace Osu.Patcher.Hook.Patches.Relax;
 
@@ -21,6 +23,9 @@ namespace Osu.Patcher.Hook.Patches.Relax;
 ///     <code><![CDATA[
 ///         if ((mods & Mods.NoFail) <= Mods.None && ...)
 ///     ]]></code>
+///     <br /><br />
+///     A prefix is also applied to skip <c>CheckFailed</c> entirely when the option is disabled
+///     and the player is using Relax/Autopilot, restoring the original no-fail-on-relax behavior.
 /// </summary>
 [OsuPatch]
 [HarmonyPatch]
@@ -43,6 +48,19 @@ internal static class AllowRelaxFailing
     [UsedImplicitly]
     [HarmonyTargetMethod]
     private static MethodBase Target() => OpCodeMatcher.FindMethodBySignature(null, Signature)!;
+
+    [UsedImplicitly]
+    [HarmonyPrefix]
+    private static bool Before()
+    {
+        if (RelaxOptions.AllowFailing.Value)
+            return true;
+
+        var activeMods = (int)ModManager.ModStatus.Get(null)!;
+        var isRelax = (activeMods & (OsuMods.Relax | OsuMods.Relax2)) > 0;
+
+        return !isRelax;
+    }
 
     [UsedImplicitly]
     [HarmonyTranspiler]
