@@ -3,7 +3,7 @@
     <PropertyGroup>
         <OutputType>Exe</OutputType>
         <ApplicationIcon>icon.ico</ApplicationIcon>
-        <ApplicationVersion>1.0.0</ApplicationVersion>
+        <ApplicationVersion>1.0.1</ApplicationVersion>
         <AssemblyName>osu!.patcher</AssemblyName>
         <RootNamespace>Osu.Patcher.Injector</RootNamespace>
         <TargetFramework>net8.0</TargetFramework>
