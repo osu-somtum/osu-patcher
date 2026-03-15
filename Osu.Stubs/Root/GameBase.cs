@@ -17,27 +17,7 @@ public static class GameBase
     [Stub]
     public static readonly LazyType Class = new(
         "osu.GameBase",
-        () => GetModeCanReload!.Reference.DeclaringType
-    );
-
-    /// <summary>
-    ///     Original: <c>get_ModeCanReload()</c>
-    ///     b20240123: <c>#=zL6aRJUMxZO5fmlF9KQ==</c>
-    /// </summary>
-    [Stub]
-    public static readonly LazyMethod<bool> GetModeCanReload = LazyMethod<bool>.ByPartialSignature(
-        "osu.GameBase::get_ModeCanReload()",
-        [
-            Ldc_I4_7,
-            Bgt_S,
-            Ldloc_0,
-            Ldc_I4_2,
-            Beq_S,
-            Ldloc_0,
-            Ldc_I4_7,
-            Beq_S,
-            Br_S,
-        ]
+        () => SoftHandle!.Reference.DeclaringType
     );
 
     /// <summary>

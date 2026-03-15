@@ -71,7 +71,7 @@ internal static class AddOptionsToUi
     private static object CreatePatcherVersionOption()
     {
         // TODO: make it open release page when clicked
-        const string version = "1.0.0"; // TODO: use real assembly version
+        const string version = "1.0.1"; // TODO: use real assembly version
         return OptionVersion.Constructor.Invoke([$"Patcher v{version}"]);
     }
 
