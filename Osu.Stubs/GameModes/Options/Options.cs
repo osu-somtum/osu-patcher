@@ -98,27 +98,4 @@ public static class Options
         ]
     );
 
-    /// <summary>
-    ///     Original: <c>CanExpand</c> (property getter)
-    ///     b20240123: <c>#=zxcgzxWXF$WLr</c>
-    /// </summary>
-    [Stub]
-    public static readonly LazyMethod<bool> GetCanExpand = LazyMethod<bool>.ByPartialSignature(
-        "osu.GameModes.Options.Options.Options::get_CanExpand()",
-        new[]
-        {
-            Ldc_I4,
-            Stloc_1,
-            Ldsfld,
-            Ldloc_1,
-            Stloc_3,
-            Stloc_2,
-            Ldloc_2,
-            Ldloc_3,
-            And,
-            Ldc_I4_0,
-            Cgt,
-            Ret,
-        }
-    );
 }

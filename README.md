@@ -40,7 +40,6 @@ Using this on official Bancho servers WILL get you banned.
 ### UI
 
 - Increase the thumbnail opacity in song select
-- Allow opening settings during gameplay with Ctrl+O
 - Other miscellaneous fixes
 
 <!-- ### Other -->
