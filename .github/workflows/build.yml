@@ -44,5 +44,8 @@ jobs:
           if-no-files-found: error
           path: .\Osu.Patcher.Injector\bin\Release\net8.0-windows\win-x86\publish\osu!.patcher.exe
 
+      # Run in Release to match the publish step above: Osu.Utils/Osu.Stubs (net452)
+      # are already built in Release, so this won't recompile — and won't hit a
+      # file lock from the build server holding the freshly-built utils.dll.
       - name: Run stub tests
-        run: dotnet run --project Osu.Stubs.Tests
+        run: dotnet run -c Release --project Osu.Stubs.Tests
