@@ -11,12 +11,12 @@ on:
 jobs:
   build:
     runs-on: windows-latest
-    timeout-minutes: 5
+    timeout-minutes: 15
     # Only run if this isn't a PR or this is a PR not from our repo
     if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.fork
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Setup .NET Core
         uses: actions/setup-dotnet@v4
@@ -31,15 +31,18 @@ jobs:
         with:
           target: i686-pc-windows-msvc
 
-      - name: Build
-        run: dotnet build Osu.Patcher.Injector
+      # Produces the single self-contained win-x86 exe with the hook payload embedded.
+      # The hook (net452) and the native rosu.dll (i686) build via the ProjectReference
+      # chain before the injector embeds them.
+      - name: Publish injector
+        run: dotnet publish Osu.Patcher.Injector -c Release
 
       - name: Upload Injector artifact
         uses: actions/upload-artifact@v4
         with:
-          name: osu!patcher-debug
+          name: osu!patcher
           if-no-files-found: error
-          path: .\Osu.Patcher.Injector\bin\Debug\net8.0\**
-      
+          path: .\Osu.Patcher.Injector\bin\Release\net8.0-windows\win-x86\publish\osu!.patcher.exe
+
       - name: Run stub tests
         run: dotnet run --project Osu.Stubs.Tests
