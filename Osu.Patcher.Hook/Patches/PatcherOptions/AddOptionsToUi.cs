@@ -42,9 +42,9 @@ internal static class AddOptionsToUi
             CreatePatcherSectionOption(),
             CreatePatchOptionSpacer(2),
             CreatePatcherVersionOption(),
-            CreateCreditsOption("Originally by rushiiMachine", "https://github.com/rushiiMachine"),
-            CreateCreditsOption("Fork maintained by richardscull", "https://github.com/SunriseCommunity/osu-patcher"),
-            CreateCreditsOption("Report issues on GitHub", "https://github.com/SunriseCommunity/osu-patcher/issues"),
+            CreateCreditsOption("Originally by rushiiMachine & richardscull", "https://github.com/rushiiMachine"),
+            CreateCreditsOption("Fork maintained by blueskychan-dev & osu!somtum team", "https://github.com/osu-somtum/osu-patcher"),
+            CreateCreditsOption("Report issues on GitHub", "https://github.com/osu-somtum/osu-patcher/issues"),
         }.ToType(OptionElement.Class.Reference);
 
         var category = OptionCategory.Constructor.Invoke([osuPatcherString, fontAwesomeSyringe]);

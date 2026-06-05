@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk" DefaultTargets="Build">
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
+        <OutputType>WinExe</OutputType>
+        <UseWPF>true</UseWPF>
         <ApplicationIcon>icon.ico</ApplicationIcon>
         <ApplicationVersion>1.0.1</ApplicationVersion>
         <AssemblyName>osu!.patcher</AssemblyName>
         <RootNamespace>Osu.Patcher.Injector</RootNamespace>
-        <TargetFramework>net8.0</TargetFramework>
+        <TargetFramework>net8.0-windows</TargetFramework>
         <LangVersion>12</LangVersion>
         <Nullable>enable</Nullable>
         <NoWarn>$(NoWarn);NU1702</NoWarn> <!-- ProjectReferences used here are expected to not match target framework -->
@@ -15,11 +16,45 @@
         <DebugType>none</DebugType>
         <Optimize>true</Optimize>
     </PropertyGroup>
+    <!-- Single-file self-contained publish defaults (used by `dotnet publish`).
+         win-x86 so the injector matches 32-bit osu! and can inject without WOW64 crossing. -->
+    <PropertyGroup>
+        <RuntimeIdentifier>win-x86</RuntimeIdentifier>
+        <SelfContained>true</SelfContained>
+        <PublishSingleFile>true</PublishSingleFile>
+        <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+        <EnableComHosting>false</EnableComHosting>
+    </PropertyGroup>
     <ItemGroup>
         <PackageReference Include="HoLLy.ManagedInjector" Version="1.0.0"/>
         <PackageReference Include="System.Management" Version="7.0.1"/>
         <ProjectReference Include="../Osu.Patcher.Hook/Osu.Patcher.Hook.csproj">
             <SetTargetFramework>TargetFramework=net452</SetTargetFramework>
         </ProjectReference>
+    </ItemGroup>
+    <!-- Logo baked into the assembly (Akatsuki-style), referenced via pack URI in XAML. -->
+    <ItemGroup>
+        <Resource Include="Assets\logo.png"/>
+    </ItemGroup>
+    <!-- Embed the hook AND all of its runtime dependencies so they can be extracted
+         side-by-side at runtime (managed deps resolve next to the hook; the native
+         rosu.ffi.dll resolves from osu!.performance.dll's codebase directory).
+         Literal includes (not globs) so they resolve at CoreCompile after the hook builds. -->
+    <ItemGroup>
+        <_HookPayload Include="..\Osu.Patcher.Hook\bin\$(Configuration)\net452\osu!.hook.dll"/>
+        <_HookPayload Include="..\Osu.Patcher.Hook\bin\$(Configuration)\net452\osu!.performance.dll"/>
+        <_HookPayload Include="..\Osu.Patcher.Hook\bin\$(Configuration)\net452\osu!.stubs.dll"/>
+        <_HookPayload Include="..\Osu.Patcher.Hook\bin\$(Configuration)\net452\utils.dll"/>
+        <_HookPayload Include="..\Osu.Patcher.Hook\bin\$(Configuration)\net452\0Harmony.dll"/>
+        <_HookPayload Include="..\Osu.Patcher.Hook\bin\$(Configuration)\net452\JetBrains.Annotations.dll"/>
+        <EmbeddedResource Include="@(_HookPayload)">
+            <LogicalName>%(Filename)%(Extension)</LogicalName>
+            <Visible>false</Visible>
+        </EmbeddedResource>
+        <!-- Native 32-bit Rust DLL (cargo emits rosu.dll; shipped as rosu.ffi.dll). -->
+        <EmbeddedResource Include="..\Osu.Performance\rosu-ffi\target\i686-pc-windows-msvc\$(Configuration.ToLower())\rosu.dll">
+            <LogicalName>rosu.ffi.dll</LogicalName>
+            <Visible>false</Visible>
+        </EmbeddedResource>
     </ItemGroup>
 </Project>

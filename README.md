@@ -2,10 +2,15 @@
   <img align="center" width="400" alt="osu! logo" src=".github/assets/logo.png">
 </p>
 
-# osu! patcher (Sunrise Community Fork)
+# osu!somtum patcher
 
-> This is a fork of [rushiiMachine/osu-patcher](https://github.com/rushiiMachine/osu-patcher), maintained by the [Sunrise Community](https://github.com/SunriseCommunity).
-> All credit for the original project goes to [rushiiMachine](https://github.com/rushiiMachine).
+> This is a fork of the [Sunrise Community](https://github.com/SunriseCommunity/osu-patcher) patcher,
+> which is itself a fork of [rushiiMachine/osu-patcher](https://github.com/rushiiMachine/osu-patcher).
+>
+> Credits:
+> - Original project by [rushiiMachine](https://github.com/rushiiMachine).
+> - Sunrise Community fork by the [Sunrise Community](https://github.com/SunriseCommunity) (maintained by richardscull).
+> - somtum fork maintained for [somtum.fun](https://somtum.fun).
 
 Apply several fixes to osu! make playing Relax more enjoyable.
 
@@ -29,8 +34,7 @@ Using this on official Bancho servers WILL get you banned.
 
 ### PP
 
-- Show a live pp counter during gameplay and replays
-- Switch between Bancho and Sunrise pp calculators
+- Show a live pp counter during gameplay and replays (Bancho pp)
 
 ### Mods
 
@@ -53,7 +57,7 @@ for the `master` branch and download the attached artifact to extract. No automa
 Only the `Stable` release stream is officially supported! `Cutting Edge` and `Beta` release streams
 may have changes that cause errors or crashes. No support will be provided.
 
-Latest tested `Stable` version: [`20260101.12`](https://osu.ppy.sh/home/changelog/stable40/20260101.1).
+Latest tested `Stable` version: [`20260412.1`](https://osu.ppy.sh/home/changelog/stable40/20260412.1).
 
 Your antivirus may detect it as malware, however this is completely expected as it contains code to inject
 into processes. If you aren't convinced it isn't a false positive, feel free to build from source code.
@@ -61,8 +65,11 @@ into processes. If you aren't convinced it isn't a false positive, feel free to 
 ## Compiling
 
 1. Install the .NET SDK 8, the .NET Framework 4.5.2 developer pack, and Rust (rustup/cargo).
-2. Run `dotnet build Osu.Patcher.Injector -c Release`
-3. Output will be located in `./Osu.Patcher.Injector/bin/Release/net8.0/`
+2. Build from a Visual Studio Developer prompt (so the MSVC `link.exe` is used for the Rust step, not Git's).
+3. For a single self-contained `.exe`: `dotnet publish Osu.Patcher.Injector -c Release`
+   - Output: `./Osu.Patcher.Injector/bin/Release/net8.0-windows/win-x86/publish/osu!.patcher.exe`
+   - This bundles everything (runtime + embedded `osu!.hook.dll`) into one file; no `.NET` install required to run it.
+4. Or for a framework-dependent build: `dotnet build Osu.Patcher.Injector -c Release`
 
 ## How
 

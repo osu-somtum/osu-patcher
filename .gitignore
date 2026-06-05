@@ -1,9 +1,20 @@
+# Build output
 bin/
 obj/
 target/
 /packages/
+
+# Rider / ReSharper
 /_ReSharper.Caches/
 *.idea
 *.iml
 *DotSettings.user
+
+# Visual Studio
+.vs/
+*.user
+
+# Claude Code (local tooling state)
+.claude/
+
 **/TestResult.xml

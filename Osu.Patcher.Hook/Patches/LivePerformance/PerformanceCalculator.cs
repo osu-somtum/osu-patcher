@@ -20,11 +20,6 @@ internal static class PerformanceCalculator
 
     public static OsuPerformance? Calculator { get; private set; }
 
-    /// <summary>
-    ///     The original mods (including RX/AP) for the current score, used by the Sunrise recalculation.
-    /// </summary>
-    public static uint OriginalMods { get; private set; }
-
     public static bool IsInitialized => Calculator != null;
 
     /// <summary>
@@ -57,10 +52,7 @@ internal static class PerformanceCalculator
         var modsObfuscated = Score.EnabledMods.Get(currentScore);
         var mods = ObfuscatedModsStub.GetValue.Invoke<int>(modsObfuscated);
 
-        OriginalMods = (uint)mods;
-
         // Strip RX and AP mods -- rosu-pp doesn't support them natively.
-        // Sunrise recalculation is applied on top using OriginalMods.
         mods &= ~ModRelax;
         mods &= ~ModAutopilot;
 

@@ -16,7 +16,7 @@ namespace Osu.Patcher.Hook;
 [UsedImplicitly]
 public static class Hook
 {
-    private const string GithubUrl = "https://github.com/SunriseCommunity/osu-patcher";
+    private const string GithubUrl = "https://github.com/osu-somtum/osu-patcher";
     private const string IssuesUrl = GithubUrl + "/issues";
     private static Harmony _harmony = null!;
 
@@ -36,7 +36,7 @@ public static class Hook
         try
         {
             Notifications.ShowMessage(
-                "Loading osu!patcher...",
+                "Loading osu!somtum patcher...",
                 NotificationColor.Neutral,
                 3000);
         }
@@ -78,7 +78,7 @@ public static class Hook
             OptionsUtils.ReloadOptions();
 
             Notifications.ShowMessage(
-                "osu!patcher initialized!",
+                "osu!somtum patcher initialized!",
                 NotificationColor.Neutral,
                 5000,
                 () => { Process.Start(GithubUrl); }
