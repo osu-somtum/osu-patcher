@@ -16,7 +16,7 @@ namespace Osu.Patcher.Injector;
 [SupportedOSPlatform("windows")]
 internal static class InjectorCore
 {
-    public const string DevServer = "freedomdive.dev";
+    public const string DevServer = "somtum.fun";
 
     private const string HookResourceName = "osu!.hook.dll";
     private const string HookTypeName = "Osu.Patcher.Hook.Hook";
